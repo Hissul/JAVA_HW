@@ -4,5 +4,7 @@
 /**
  * 
  */
-module GitTest {
+module GitTest {	
+	requires LoggerMyLib;
+	
 }
