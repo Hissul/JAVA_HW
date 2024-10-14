@@ -1,39 +1,25 @@
 package GitTest;
 
-
-
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+	
+		Media media = new Media();
 		
-		Homework1 hw = new Homework1();
+		// media.AddMedia(null);
+		media.AddMedia("path to video");
+		media.AddMedia("path to picture");
+		media.AddMedia("path to audio");
 		
-		System.out.println("*****     ЗАДАНИЕ 1     *****");
-		System.out.println();
-		hw.IsHappyTicket();
-		System.out.println();
-		System.out.println("*****************************");
-		System.out.println();
+		media.ShowAllPaths();
 		
-		System.out.println("*****     ЗАДАНИЕ 2     *****");
-		System.out.println();
-		hw.MakeTree();
-		System.out.println();
-		System.out.println("*****************************");
-		System.out.println();
+		media.DeleteMedia("path to audio");
 		
-		System.out.println("*****     ЗАДАНИЕ 3     *****");
-		hw.ChangingArray();
-		System.out.println();
-		System.out.println("*****************************");
-		System.out.println();
+		media.ShowAllPaths();
 		
-		System.out.println("*****     ЗАДАНИЕ 4     *****");
-		System.out.println();
-		hw.WorkWhisArray();
-		System.out.println();
-		System.out.println("*****************************");
-		System.out.println();
+		media.RemoveMedia("path to picture");
+		
+		media.ShowAllPaths();
 
 	}
 }

@@ -1,0 +1,3 @@
+Ivanov -> Bad
+Pupkin -> Norm
+Neivanov -> Norm
