@@ -73,7 +73,7 @@ public class Spending extends HttpServlet {
 
 		
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = new Configuration().configure().buildSessionFactory().openSession();
 		
 		System.out.println(session);	
 		
