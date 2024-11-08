@@ -1,20 +1,28 @@
 package Spending;
 
-import java.io.File;
+
 import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.Transaction;
+
+import HomeTomecat.Wallet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 /**
  * Servlet implementation class Spending
@@ -23,27 +31,17 @@ import jakarta.servlet.http.HttpServletResponse;
 public class Spending extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-
    
-    public Spending() {
-        // TODO Auto-generated constructor stub
-    }
-
-    
 	
+	// GET
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("G E T");
 		
-		ArrayList<String> rows = new ArrayList<String>();
- 		
-		FileReader reader = new FileReader("SPENDING.txt");
-		Scanner scan = new Scanner(reader);
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
 		
-		while(scan.hasNextLine()) {			
-			rows.add(scan.nextLine());			
-		}
+		List<Wallet> spendings = session.createQuery("FROM Wallet", Wallet.class).getResultList();
 		
-		reader.close();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		response.setContentType("text/html");
 		
@@ -56,8 +54,8 @@ public class Spending extends HttpServlet {
 	        	writer.println("<body>");
 	        	writer.println("<h1>Your Spendings</h1>");
 	        	writer.println("<ul>");
-	        	for(String row : rows) {
-        			writer.println("<li>" + row + "</li>");         			
+	        	for(Wallet spending : spendings) {
+        			writer.println("<li>" + formatter.format(spending.date) + " - " + spending.purpose + " - " + spending.amount  + "</li>");         			
         		}
 	        writer.println("</ul>");
 	        	writer.println("</body>");
@@ -65,23 +63,29 @@ public class Spending extends HttpServlet {
         } finally {
             writer.close();  
         }
-        
+		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	
-	
+	// POST
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {				
+
 		
-		String text = request.getParameter("textField");
-		Integer amount = Integer.valueOf(request.getParameter("amountField"));	
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-        Date date = new Date();  
-        
-        FileWriter writer = new FileWriter("SPENDING.txt", true); // рабочий стол??? WTF??
-        writer.write(formatter.format(date) + "  :  " +  text + "  -  " + amount + "\n");
-        writer.close();
+		System.out.println(session);	
+		
+		Wallet wallet = new Wallet();
+		wallet.purpose = request.getParameter("purpose");
+		wallet.amount = Double.valueOf(request.getParameter("amount"));
+		wallet.date = new Date();
+		
+		session.save(wallet);
+		
+		Transaction transaction = session.beginTransaction();
+		transaction.commit();
 		
         doGet(request, response);
 	}

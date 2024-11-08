@@ -14,13 +14,13 @@
 		<div class='wrapper'>
 			<form class='form' action='spending' method='post'>
 				<div class='inputDiv'>
-					<label for='textField'>Reasons for spending?</label>
-					<input type='text' id='textField' name='textField' required>
+					<label for='purpose'>Reasons for spending?</label>
+					<input type='text' id='purpose' name='purpose' required>
 				</div>
 					
 				<div class='inputDiv'>
-					<label for='amountField'>How much</label>
-					<input type='number' id='amountField' name='amountField' required>
+					<label for='amount'>How much</label>
+					<input type='text' id='amount' name='amount' required>
 				</div>
 				
 				<div class='formSubmit'>
